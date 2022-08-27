@@ -1,3 +1,7 @@
+%--------------------------------------------------------------------------
+%  Analytical solution to model described in McClelland et al., 2017. 
+%  This function is called by ISOMOD_analytical_fast. 
+%--------------------------------------------------------------------------
 
 function isoconcs = cocco_iso_concs(Ce, Be, FFIX, FCAL,... 
                             PCcell, PCv, PCx, ...
