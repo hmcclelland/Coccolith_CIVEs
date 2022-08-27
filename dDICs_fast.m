@@ -1,3 +1,7 @@
+%  Reduced code for fast calculation of equilibrium carbonate parameters. 
+%  See: Zeebe & Wolf-gladrow CO2 in seawater, 2001, for constants. 
+%
+%
 %  Inputs:   
 %  1. total DIC conc
 %  2. bulk DIC d13C (here set to 0)
