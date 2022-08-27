@@ -1,6 +1,12 @@
 
 %---------------------------------------------------------------------
-% Code for model derived in McClelland et al. 2017, Nat comms. 
+% Code for Coccolith carbon isotope vital effect model derived in McClelland et al. 2017, Nat comms. 
+% Requires cocco_iso_concs in same folder. 
+%
+% Please cite as:  
+% McClelland, H., Bruggeman, J., Hermoso, M. et al. 
+% The origin of carbon isotope vital effects in coccolith calcite. 
+% Nat Commun 8, 14511 (2017). https://doi.org/10.1038/ncomms14511
 %---------------------------------------------------------------------
 
 % Define function ISOMOD_analytical: 
