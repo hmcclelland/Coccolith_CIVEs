@@ -1,3 +1,8 @@
+% Master script for model developed in Claxton et al., 2022. 
+% Please cite as: 
+%
+% 
+%
 
 close all
 format short E
