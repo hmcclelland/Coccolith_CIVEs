@@ -1,5 +1,5 @@
 %--------------------------------------------------------------------------
-%  Analytical solution to model described in McClelland et al., 2017. 
+%  Analytical solution to system of ODEs described in McClelland et al., 2017. 
 %  This function is called by ISOMOD_analytical_fast. 
 %--------------------------------------------------------------------------
 
