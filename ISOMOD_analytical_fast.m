@@ -4,7 +4,7 @@
 % Requires cocco_iso_concs in same folder. 
 %
 % Please cite as:  
-% McClelland, H., Bruggeman, J., Hermoso, M. et al. 
+% McClelland, H., et al. 
 % The origin of carbon isotope vital effects in coccolith calcite. 
 % Nat Commun 8, 14511 (2017). https://doi.org/10.1038/ncomms14511
 %---------------------------------------------------------------------
