@@ -8,22 +8,26 @@ close all
 format short E
 
 % Define the number of Monte-Carlo runs:
-Number_of_MC_runs = 10;
+Number_of_MC_runs = 8;
 tic
 %%  -----------------------------------------------------------------------
 % All variables are set up in a 3-D matrix, with the third dimension 
 % representing each individual run.---*
 %  -----------------------------------------------------------------------
+%% -----------------------------------------------------------------------
+%  Assign functions folder to path
+%  -----------------------------------------------------------------------
+addpath(genpath('functions/'))
 
 %% -----------------------------------------------------------------------
 %  Load initial Data...
 %  -----------------------------------------------------------------------
 
-LC_dc = readtable('LC_data_fast/LC_downcore_d13C_rearranged_fast_with_error.csv');
-LC_refs = readtable('LC_data_fast/LC_refs_fast.csv');
+LC_dc = readtable('data/LC_data_fast/LC_downcore_d13C_rearranged_fast_with_error.csv');
+LC_refs = readtable('data/LC_data_fast/LC_refs_fast.csv');
 LC_refs = sortrows(LC_refs,[1,2]);
 % size_frac_index is Matrix A from the manuscript
-size_frac_index = load('LC_data_fast/LC_downcore_d13C_index_fast.csv');
+size_frac_index = load('data/LC_data_fast/LC_downcore_d13C_index_fast.csv');
 
 % Defining the unique species, size fractions and ages
 sps = unique(LC_refs.sp);
@@ -68,7 +72,7 @@ d13C_data_matrix_rel_mean =  normrnd(d13C_data_rel_mean,d13C_dataO_sigma);
 
 carbin = NaN(1000,2,10);                                                             
 for i = 1:10 
-    name = strcat('Carb_chem/',string(i),'_carboutoc.csv');
+    name = strcat('data/Carb_chem/',string(i),'_carboutoc.csv');
     carb_data_i = readtable(name);
     carbin(:,:,i) = table2array(carb_data_i(:, [2 3]));                              
 end
@@ -239,7 +243,7 @@ Monte_CO2_upper_percentile = Monte_CO2_percentiles(3,:);
 
 %% ---------- Looking at the comparison with the independent bulk record -----------
 % Load in foram data 
-foram_data = readtable('calculated_foram_data.csv');
+foram_data = readtable('data/calculated_foram_data.csv');
 
 % Filter data for values in which foram data is present
 Ordered_mean_cives = nanmean(d13C_dataO,1)';
@@ -273,7 +277,7 @@ scores = nanmean((repmat(TARGET,Number_of_MC_runs,1) - CE_models).^2,2);
 % lower plot = pCO2 using henrys constants (calculated from the temperature
 % from Anagnoustou et al 2020. Temp record interpolated for age points in
 % this study.
-henrys = readtable('henrys_constants.csv').Var2;
+henrys = readtable('data/henrys_constants.csv').Var2;
 figure(1)
 subplot(2,1,1)
 index_for_search =  (1./scores)<1;
