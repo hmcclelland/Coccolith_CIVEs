@@ -17,11 +17,10 @@ Questions to: louis.m.claxton@gmail.com OR hmcclelland@unimelb.edu.au
 
 - Master_File.m - runs optimisation routine presented in Claxton et al. 2022.
 
-- code/
+- functions/
 	- cocco_iso_concs.m - Analytical solution to system of ODEs (McClelland at al. 2017)
 	- ISOMOD_analytical_fast.m - Matlab implementation of isotope flux model (McClelland at al. 2017). Vectorized for speed.
 	- dDICs_fast.m - Fast calculation of equilibrium carbonate chemistry parameters (concs and isotopes)
-	-...
-
+	-
 - data/
 	-
