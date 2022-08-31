@@ -8,22 +8,26 @@ close all
 format short E
 
 % Define the number of Monte-Carlo runs:
-Number_of_MC_runs = 10;
+Number_of_MC_runs = 8;
 tic
 %%  -----------------------------------------------------------------------
 % All variables are set up in a 3-D matrix, with the third dimension 
 % representing each individual run.---*
 %  -----------------------------------------------------------------------
+%% -----------------------------------------------------------------------
+%  Assign functions folder to path
+%  -----------------------------------------------------------------------
+addpath(genpath('functions/'))
 
 %% -----------------------------------------------------------------------
 %  Load initial Data...
 %  -----------------------------------------------------------------------
 
-LC_dc = readtable('LC_data_fast/LC_downcore_d13C_rearranged_fast_with_error.csv');
-LC_refs = readtable('LC_data_fast/LC_refs_fast.csv');
+LC_dc = readtable('data/LC_data_fast/LC_downcore_d13C_rearranged_fast_with_error.csv');
+LC_refs = readtable('data/LC_data_fast/LC_refs_fast.csv');
 LC_refs = sortrows(LC_refs,[1,2]);
 % size_frac_index is Matrix A from the manuscript
-size_frac_index = load('LC_data_fast/LC_downcore_d13C_index_fast.csv');
+size_frac_index = load('data/LC_data_fast/LC_downcore_d13C_index_fast.csv');
 
 % Defining the unique species, size fractions and ages
 sps = unique(LC_refs.sp);
@@ -50,11 +54,12 @@ Fit2datB = [P_Ccell,T_A,T_B,E_FIX,FN];
 d13C_dataO = table2array(LC_dc(:,[2 4 6 8 10]))';
 % determine the vital effects relative to the mean
 % d13C_data_rel_mean is Matrix H from the manuscript
-d13C_data_rel_mean = repmat((d13C_dataO - nanmean(d13C_dataO,1)), [1,1,Number_of_MC_runs]);
+d13C_data_rel_mean = repmat((d13C_dataO - mean(d13C_dataO,1, 'omitnan')), [1,1,Number_of_MC_runs]);
 % load in the uncertainty
 d13C_dataO_sigma = repmat((table2array(LC_dc(:,[3 5 7 9 11]))'),[1,1,Number_of_MC_runs]);
 % create a matrix of measured data points within associated error
 d13C_data_matrix_rel_mean =  normrnd(d13C_data_rel_mean,d13C_dataO_sigma);
+
 
 %% -----------------------------------------------------------------------
 %  Establishing parameter space to explore for carbonate carbonate chemistry :  
@@ -68,7 +73,7 @@ d13C_data_matrix_rel_mean =  normrnd(d13C_data_rel_mean,d13C_dataO_sigma);
 
 carbin = NaN(1000,2,10);                                                             
 for i = 1:10 
-    name = strcat('Carb_chem/',string(i),'_carboutoc.csv');
+    name = strcat('data/Carb_chem/',string(i),'_carboutoc.csv');
     carb_data_i = readtable(name);
     carbin(:,:,i) = table2array(carb_data_i(:, [2 3]));                              
 end
@@ -239,10 +244,10 @@ Monte_CO2_upper_percentile = Monte_CO2_percentiles(3,:);
 
 %% ---------- Looking at the comparison with the independent bulk record -----------
 % Load in foram data 
-foram_data = readtable('calculated_foram_data.csv');
+foram_data = readtable('data/calculated_foram_data.csv');
 
 % Filter data for values in which foram data is present
-Ordered_mean_cives = nanmean(d13C_dataO,1)';
+Ordered_mean_cives = mean(d13C_dataO,1, 'omitnan')';
 TARGET = Ordered_mean_cives(foram_data.index_for_matlab)';
 
 % Need to select which foram vital effec to apply, default is 0.5permil
@@ -258,14 +263,14 @@ for i = 1:Number_of_MC_runs
     , m_CO2_initial(:,:,i), size_frac_index, amount_calcite_data_matrix(:,:,i));
  model(isnan(model)) = nan;
  model = model(:,foram_data.index_for_matlab) + d13c_DIC';
- CE_models(i,:) = nanmean(model(:,:),1)';
+ CE_models(i,:) = mean(model(:,:),1, 'omitnan')';
 end
 
 % Penalise runs that predict NaNs
 CE_models(isnan(CE_models)) = 5;
 
 % Calculate Scores (Target- Model)^2
-scores = nanmean((repmat(TARGET,Number_of_MC_runs,1) - CE_models).^2,2);
+scores = mean((repmat(TARGET,Number_of_MC_runs,1) - CE_models).^2,2, 'omitnan');
 [Highest_run,highest_run_iter] = min(scores);
 
 % Plot Figure 1 - parameter space that best fits d13C_DIC 
@@ -273,12 +278,12 @@ scores = nanmean((repmat(TARGET,Number_of_MC_runs,1) - CE_models).^2,2);
 % lower plot = pCO2 using henrys constants (calculated from the temperature
 % from Anagnoustou et al 2020. Temp record interpolated for age points in
 % this study.
-henrys = readtable('henrys_constants.csv').Var2;
+henrys = readtable('data/henrys_constants.csv').Var2;
 figure(1)
 subplot(2,1,1)
 index_for_search =  (1./scores)<1;
-x = nanmean(Monte_RR,2);
-y = nanmean(Monte_CO2,2);
+x = mean(Monte_RR,2, 'omitnan');
+y = mean(Monte_CO2,2, 'omitnan');
 z = 1./scores;
 m = [x(~index_for_search) y(~index_for_search) z(~index_for_search)];
 m = sortrows(m,3);
@@ -324,12 +329,12 @@ Monte_RR(Monte_RR ==0) = NaN;
 figure(2)
 movegui('southwest');
 % Set colours:
-COL2 = cbrewer('qual', 'Set1', 5,'PCHIP');
+COL2 = cbrewer2('qual', 'Set1', 5,'PCHIP');
 % Plot measured vital effects 
 grid on
 labels = ["3-5\mum Measured","5-8\mum Measured","8-10\mum Measured","10-15\mum Measured","15-20\mum Measured"];
 d13C_dataO = table2array(LC_dc(:,[2 4 6 8 10]))';
-d13C_data_for_plot = d13C_dataO - nanmean(d13C_dataO,1);
+d13C_data_for_plot = d13C_dataO - mean(d13C_dataO,1, 'omitnan');
 d13C_dataO_sigma_for_plot = table2array(LC_dc(:,[3 5 7 9 11]))';
 for k = 1:5
     hold on
