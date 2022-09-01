@@ -1,7 +1,5 @@
 % Master script for model developed in Claxton et al., 2022. 
-% Please cite as: 
-%
-% 
+% Please cite the original paper when using any part of this code. 
 %
 
 close all
