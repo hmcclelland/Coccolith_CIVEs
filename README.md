@@ -5,11 +5,11 @@ This respository contains Matlab codes developed for use in the following papers
 
 McClelland et al., 2017, Nature Communications.   
 link: https://www.nature.com/articles/ncomms14511  
-Questions to:  hmcclelland@unimelb.edu.au
+Questions to:  h.mcclelland@ucl.ac.uk
 
 Claxton et al., 2022, Nature Geoscience.  
 link: https://www.nature.com/articles/s41561-022-01006-0  
-Questions to: louis.m.claxton@gmail.com OR hmcclelland@unimelb.edu.au
+Questions to: louis.m.claxton@gmail.com OR h.mcclelland@ucl.ac.uk
 
 # Set-up
 Master_file.m is the file to run in Matlab. You may need to make sure Matlab is up to date (2021), and install the following toolboxes: Statistics and Machine Learning Toolbox; and Parallel Computing Toolbox. 
